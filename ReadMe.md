@@ -44,11 +44,37 @@ Packages can use type definitions from various sources and different versions, k
 # Webpack 을 이용한 빌드 
 
 
-	webpack.config.js 
+	`webpack.server.config.js` 파일 설정 설명  
 
-
-
-
-
-
+    module.exports = {
+    entry: './app/server.ts', // 컴파일 시작 파일 
+    output: {
+    filename: './build/bundle.js', // 컴파일 출력 파일
+    path: __dirname
+    },
+    target: 'node', // Server side  trans Complie 시에 정상적인 빌드가 되지 위해서는 이 설정이 필요하다. 
+    module: {
+    rules: [
+        {
+        enforce: 'pre',
+        test: /\.js$/,
+        loader: "source-map-loader"
+        },
+        {
+        enforce: 'pre',
+        test: /\.tsx?$/,
+        use: "source-map-loader"
+        },
+        {
+        test: /\.tsx?$/,
+        loader: 'ts-loader',
+        exclude: /node_modules/, // ts-loader 는 ts 파일을 javascript로 변환하는 모듈 
+        }
+    ]
+    },
+    resolve: {
+    extensions: [".tsx", ".ts", ".js"] // 자동으로 확장자를 엮어주는 설정
+    },
+    devtool: 'inline-source-map',
+    };
 
